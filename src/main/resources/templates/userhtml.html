@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>用户信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+
+        <!--引入公共顶栏-->
+        <div th:replace="common::topbar"></div>
+
+
+        <input type="text" id="name" name="name"  th:value="${user!=null}?${user.name}">
+        <input type="text" id="age" name="age" th:value="${user!=null}?${user.age}">
+
+        <!-- 日期显示 -->
+        <span th:text="${#calendars.format(today,'dd MMMM yyyy')}">13 May 2011</span>
+
+        <!-- 循环:方法内临时参数>外部参数 -->
+        <tr th:each="user : ${list}">
+            <td th:text="${user.name}">Onions</td>
+            <td th:text="${user.age}">2.41</td>
+            <a href="hellohtml.html" th:href="@{/hellohtml(name=${user.name})}" th:unless="${#lists.isEmpty(user.name)}">view1</a>
+            <a href="hellohtml.html"  th:href="@{/hello(name=${user.name})}"   th:if="${not #lists.isEmpty(user.name)}">view2</a>
+        </tr>
+
+
+        <!--引入公共底部栏-->
+        <div th:replace="common::bottombar"></div>
+
+</body>
+
+<script type="text/javascript">
+    var age = [[${user.age}]];   //thymeleaf在Js里面获取SpringMVCModel里面写的值
+    var name = "[[${user.name}]]";   // 字符串需要双引号
+    console.log("年龄："+age);
+    console.log("姓名："+name);
+
+</script>
+
+</html>
