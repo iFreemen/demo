@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf Ajax Test</title>
+
+    <script type="text/javascript" th:src="@{/js/jq/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+<input type="text" name="name" id="name">
+<input type="text" name="age" id="age">
+<button onclick="ajaxSubmit()">提交</button>
+
+<script type="text/javascript" th:inline="javascript">
+
+    /*<![CDATA[*/
+    function ajaxSubmit(){
+        var name = $("#name").val();
+        var age = $("#age").val();
+        var  url = [[@{/ajaxTest.action}]];
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({name : name,age: age}),
+            async: true,
+            success: function(data){
+                alert(data.message);
+            },error:function(data){
+                alert("异常了");
+            }
+        });
+    }
+
+    /*]]>*/
+
+
+</script>
+
+</body>
+</html>

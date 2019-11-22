@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +26,6 @@ import java.util.*;
 @Controller
 public class testController {
     private final static Logger logger = LoggerFactory.getLogger(testController.class);
-
-    @Value("${file.upload.path}")
-    private String fileUploadPath;
 
     /**
      * 后台传递单个元素至前端页面
@@ -163,7 +158,7 @@ public class testController {
                 //文件复制
                 String src = path + fileName;
                 //根据自己系统的resource 目录所在位置进行自行配置
-                String destDir = fileUploadPath + File.separator + fileAdd + File.separator;
+                String destDir = filePath + File.separator + fileAdd + File.separator;
                 copyFile(src,destDir,fileName);
 
                 url= returnUrl + fileAdd + "/"+ fileName;
@@ -177,7 +172,6 @@ public class testController {
         model.addAttribute("user", user);
         return "postUserFrom";
     }
-    //<<<<<<<<<<<<<<<<<<<<<<<<<<< end 实现表单 >>>>>>>>>>>>>>>>>>>>>>>>>
 
     /**
      * 文件复制
@@ -209,4 +203,24 @@ public class testController {
         in.close();
         out.close();
     }
+
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<< end 实现表单 >>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+    //<<<<<<<<<<<<<<<<<<<<<<<<<< start ajax提交信息 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @GetMapping("/ajaxTest")
+    public String toAjax(){
+        return "ajaxTest/ajaxTest";
+    }
+    @PostMapping("/ajaxTest.action")
+    public void ajaxTest(@RequestBody User user, HttpServletResponse resp)throws Exception{
+        System.out.println(user.toString());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",200);
+        jsonObject.put("message","成功");
+        resp.setContentType("text/html;charset=UTF-8");
+        resp.getWriter().println(jsonObject.toJSONString());
+        resp.getWriter().close();
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<<<< end ajax提交信息 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
