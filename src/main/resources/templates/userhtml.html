@@ -25,7 +25,6 @@
             <a href="hellohtml.html"  th:href="@{/hello(name=${user.name})}"   th:if="${not #lists.isEmpty(user.name)}">view2</a>
         </tr>
 
-
         <!--引入公共底部栏-->
         <div th:replace="common::bottombar"></div>
 

@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -18,6 +19,7 @@ public class User implements Serializable {
     private String name;
     private int age;
     private Boolean isStudent;
+    private MultipartFile file;
 
     public User(String name, int age) {
         this.name = name;
@@ -32,4 +34,5 @@ public class User implements Serializable {
         this.age = age;
         this.isStudent = isStudent;
     }
+
 }
