@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
 
 /**
- * @ClassName User
+ * @ClassName UserMapper
  * @Description: TODO
  * @Author Freemen
  * @Time 2019/11/19 16:27
@@ -17,7 +17,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -1369148652554782331L;
 
     private String name;
-    private int age;
+    private Integer age;
     private Boolean isStudent;
     private MultipartFile file;
 

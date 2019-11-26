@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <title>Thymeleaf Ajax Test</title>
 
-    <script type="text/javascript" th:src="@{/js/jq/jquery-3.4.1.min.js}"></script>
+    <!-- 两个src这种写法：利用thymeleaf提供的相对上下文动态路径，轻松解决问题，
+    静态路径可以用来描述当前页面文件与其他页面文件在当前工程的位置关系，这样即使在未联网的情况直接打开html文件，
+    也可以找到所引用的js文件和css文件等其他文件，充分发挥thymeleaf的威力! -->
+    <script src="../js/jq/jquery-3.4.1.min.js" type="text/javascript" th:src="@{/js/jq/jquery-3.4.1.min.js}"></script>
 </head>
 <body>
 <input type="text" name="name" id="name">

@@ -9,9 +9,4 @@ class DemoApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
-	@Test
-	void testSys(){
-		System.out.println("启动成功！！！");
-	}
 }
