@@ -37,6 +37,18 @@ public class testController {
         model.addAttribute("name", "Freemen");
         return "hellohtml";
     }
+    /**
+     * 接收页面传递的参数--同步
+     * 直接访问会报错
+     * @param model
+     * @param name
+     * @return
+     */
+    @GetMapping("/hellohtml")
+    public String hellohtml(Model model,@RequestParam String name){
+        model.addAttribute("name", name);
+        return "hellohtml";
+    }
 
 
     /**
@@ -69,25 +81,12 @@ public class testController {
         return "userhtml";
     }
 
-    /**
-     * 接收页面传递的参数--同步
-     * @param model
-     * @param name
-     * @return
-     */
-    @GetMapping("/hellohtml")
-    public String hellohtml(Model model,@RequestParam String name){
-        model.addAttribute("name", name);
-        return "hellohtml";
-    }
-
-
     //<<<<<<<<<<<<<<<<<<<<<<<<<<< start 实现表单 >>>>>>>>>>>>>>>>>>>>>>>>>
     /**上传地址*/
     @Value("${file.upload.path}")
     private String filePath;
     /**显示相对地址*/
-    @Value("${file.upload.path.relative}")
+    @Value("${file.upload.relative}")
     private String fileRelativePath;
 
     @GetMapping("/userIndex")
@@ -98,29 +97,7 @@ public class testController {
     @PostMapping("/postUserFrom")
     public String postUserFrom(Model model, @ModelAttribute(value="user") User user, HttpServletRequest request, HttpServletResponse response){
         System.out.println("用户信息:"+user.toString());
-
         MultipartFile file = user.getFile();
-
-        // 上传到本地文件夹
-//        // 获取上传文件名
-//        String filename = file.getOriginalFilename();
-//        // 定义上传文件保存路径
-//        String path = filePath+"rotPhoto/";
-//        // 新建文件
-//        File filepath = new File(path, filename);
-//        // 判断路径是否存在，如果不存在就创建一个
-//        if (!filepath.getParentFile().exists()) {
-//            filepath.getParentFile().mkdirs();
-//        }
-//        try {
-//            // 写入文件
-//            file.transferTo(new File(path + File.separator + filename));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        // 将src路径发送至html页面
-//        model.addAttribute("filename", "D:/images/rotPhoto/"+filename);
-
 
         // 上传到服务器
         File targetFile=null;

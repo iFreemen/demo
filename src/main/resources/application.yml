@@ -1,0 +1,49 @@
+# 端口
+server:
+  port: 8080
+
+# 文件上传参数
+file:
+  upload:
+    path: D://Freemen//code//github_project//springboot_series//official//demo//demo//src//main//resources//static//imgs
+    relative: /images/**
+
+# 数据库连接,如果Driver标红就是没有依赖：mysql-connector-java
+spring:
+  datasource:
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#   整合 Druid 标红：需要提高依赖版本（前提现有 数据库连接信息）
+    type: com.alibaba.druid.pool.DruidDataSource
+#   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+#   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+# 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 128000KB
+      max-request-size: 128000KB
+
+# showSQL  配置到dao
+logging:
+  level:
+    com:
+      example:
+        demo:
+          dao: debug
