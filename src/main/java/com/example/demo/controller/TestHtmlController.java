@@ -24,8 +24,8 @@ import java.util.*;
  * @Version V1.0
  **/
 @Controller
-public class testController {
-    private final static Logger logger = LoggerFactory.getLogger(testController.class);
+public class TestHtmlController {
+    private final static Logger logger = LoggerFactory.getLogger(TestHtmlController.class);
 
     /**
      * 后台传递单个元素至前端页面

@@ -5,8 +5,13 @@ server:
 # 文件上传参数
 file:
   upload:
+# 自行修改路径
     path: D://Freemen//code//github_project//springboot_series//official//demo//demo//src//main//resources//static//imgs
     relative: /images/**
+  poi:
+# 自行修改路径
+    path: D:\Freemen\code\github_project\springboot_series\official\demo\demo\src\main\resources\static\testexcel\
+
 
 # 数据库连接,如果Driver标红就是没有依赖：mysql-connector-java
 spring:
@@ -68,6 +73,7 @@ spring:
       host: 192.168.118.132
       port: 27017
       database: study_mongo
+
 
 
 # showSQL  配置到dao
