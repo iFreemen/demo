@@ -73,6 +73,23 @@ spring:
       host: 192.168.118.132
       port: 27017
       database: study_mongo
+# 整合 Email 发送
+# JavaMailSender 邮件发送配置
+  mail:
+    host: smtp.163.com
+    username: 134*******@163.com
+    # 这个是授权码，不一定就是密码
+    password: F******123
+    properties:
+      mail:
+        stmp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+# QQ:设置==>账户===>POP3/Smtp服务开启获取QQ授权码
+# 如果认证失败，jdk1.8中jre/lib/security中两个jar包被替换了，网上下载 local_policy.jar 和 US_export_policy.jar
+
 
 
 

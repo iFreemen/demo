@@ -15,8 +15,6 @@ import java.util.Date;
 @Data
 public class Staff implements Serializable {
 
-    private static final long serialVersionUID = -2870412088190596814L;
-
     private String name;
 
     private Integer age;

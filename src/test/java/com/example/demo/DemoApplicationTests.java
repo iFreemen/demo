@@ -1,13 +1,28 @@
 package com.example.demo;
 
+import com.example.demo.entity.Staff;
 import com.example.demo.utils.RedisUtil;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -44,6 +59,8 @@ class DemoApplicationTests {
 
     @Test
     public void testNumberFormatException(){
-        System.out.println("输出"+Integer.parseInt("29.0"));
+        System.out.println("输出"+Integer.parseInt("29"));
     }
+
+
 }
