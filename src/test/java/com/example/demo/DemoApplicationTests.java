@@ -1,6 +1,10 @@
 package com.example.demo;
 
+import com.example.demo.entity.Buyer;
 import com.example.demo.entity.Staff;
+import com.example.demo.service.Impl.deleteIfelse.AVIPPayServiceImpl;
+import com.example.demo.service.Impl.deleteIfelse.FactoryAndBean.CalPrice;
+import com.example.demo.service.UserPayService;
 import com.example.demo.utils.RedisUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,9 +27,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
 
 @SpringBootTest
 class DemoApplicationTests {
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Autowired
     private RedisUtil redisUtil;
 
@@ -63,4 +74,26 @@ class DemoApplicationTests {
     }
 
 
+    /**
+     * https://blog.csdn.net/lisheng19870305/article/details/103349316
+     */
+    @Test
+    public void testOrderPrice(){
+        AVIPPayServiceImpl avipPayService = new AVIPPayServiceImpl();
+        Double quote = avipPayService.quote(300.0,new Buyer());
+        System.out.println("A会员的最终价格"+quote);
+    }
+
+    @Test
+    public void testOrderPrice2() throws Exception{
+        CalPrice calPrice = new CalPrice();
+        Buyer buyer = new Buyer();
+        buyer.setName("Freemen1");
+        buyer.setLevel("AVIP");
+        String s = "2019-12-31 09:46:57";
+        Date parse = format.parse(s);
+        buyer.setInvalidDate(parse);
+        Double aDouble = calPrice.calPrice(300.0, buyer);
+        System.out.println("价格"+aDouble);
+    }
 }
