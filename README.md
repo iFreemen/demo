@@ -1,11 +1,3 @@
-"# springboot_serial_learning" 
-"# demo" 
-# demo
-
-文档是笔记形式的，很粗糙。投合一下：
-http://note.youdao.com/noteshare?id=20e0e46abbcf53e73d7f192cd455c953
-
-
 一、快速创建独立的，生产级的Spring项目，并且配置很少。
 
 二、特点：（反正就是多方支持，兼容好，上手快各种优势）
@@ -99,14 +91,27 @@ Excel导出：表头的顺序、反射导致不能用  serialVersionUID 等等
 参考链接：http://note.youdao.com/noteshare?id=62000a5141c28a28cc0ea3618fe4c424
 详情见源码：https://github.com/iFreemen/demo   （附件的格式没做处理）
 
-八、队列实现
-九、EA
+解决if-els过多的的问题===> 策略模式+工厂模式
+八、队列实现：http://note.youdao.com/noteshare?id=3401da9e6fbe971a2e6834afe53aa528
+九、ES(ElasticSearch)：单机：http://note.youdao.com/noteshare?id=64db4221aae66cb2dbea45762e2a20f4    处理报错：http://note.youdao.com/noteshare?id=53d0ec25394ff3dd37669923434af1d3
+集群ES还没尝试：待续
+springboot整合ES：http://note.youdao.com/noteshare?id=ffb422e684784aa8d5381d35b87100cb
+
+十、Springboot 整合多数据源
+参考：https://blog.csdn.net/liuxiao723846/article/details/80461071
+
 十、Dubbo+Zookepper
+
 十一、Docker
 十二、springcloud
 十三、发布
 十四、Jenkins
 十五、日志分析、性能调优：JVM、SQL
+十六、Netty，Tomcat
+十七、RESTful
+十八、vue等
+压力测试
+
 
 
 

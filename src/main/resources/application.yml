@@ -73,6 +73,11 @@ spring:
       host: 192.168.118.132
       port: 27017
       database: study_mongo
+# 整合 ES
+    elasticsearch:
+      cluster-nodes: 192.168.118.132:9300
+      cluster-name: my-application
+
 # 整合 Email 发送
 # JavaMailSender 邮件发送配置
   mail:
@@ -90,8 +95,14 @@ spring:
 # QQ:设置==>账户===>POP3/Smtp服务开启获取QQ授权码
 # 如果认证失败，jdk1.8中jre/lib/security中两个jar包被替换了，网上下载 local_policy.jar 和 US_export_policy.jar
 
-
-
+# 整合activemq
+  activemq:
+    broker-url: tcp://192.168.118.132:61616
+    in-memory: true
+    user: admin
+    password: admin
+    pool:
+      enabled: true
 
 # showSQL  配置到dao
 logging:
