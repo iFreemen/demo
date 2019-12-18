@@ -72,6 +72,7 @@ ii、整合Mybatis：  Mybatis官方：https://mybatis.org/mybatis-3/zh/getting-
 详情查看代码：https://github.com/iFreemen/demo
 
 iii、整合Druid: 参考外部博客：https://www.jianshu.com/p/fd2c8113f79d    源码： https://github.com/iFreemen/demo
+启动springboot应用，访问 http://localhost:8080/druid/index.html 进入druid数据源监控系统（Freemen Freemen）
 多数据源：
 
 iiii、整合redis：首先要先准备好redis环境：http://note.youdao.com/noteshare?id=96878ddd8ea0fded0882f90a85072f3f
@@ -97,10 +98,13 @@ Excel导出：表头的顺序、反射导致不能用  serialVersionUID 等等
 集群ES还没尝试：待续
 springboot整合ES：http://note.youdao.com/noteshare?id=ffb422e684784aa8d5381d35b87100cb
 
-十、Springboot 整合多数据源
+十、Springboot 整合多数据源，源码在github上
 参考：https://blog.csdn.net/liuxiao723846/article/details/80461071
+注解形式整合多数据源：http://note.youdao.com/noteshare?id=9838907efdbfaf47f225349dee8aa392
+XML形式整合多数据源：待续
 
 十、Dubbo+Zookepper
+
 
 十一、Docker
 十二、springcloud
@@ -111,7 +115,5 @@ springboot整合ES：http://note.youdao.com/noteshare?id=ffb422e684784aa8d5381d3
 十七、RESTful
 十八、vue等
 压力测试
-
-
 
 
