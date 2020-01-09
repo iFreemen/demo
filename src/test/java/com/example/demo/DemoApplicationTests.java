@@ -254,8 +254,8 @@ class DemoApplicationTests {
     /**
      * @Description:
      * termQuery:功能更强大，除了匹配字符串以外，还可以匹配
-     * int/long/double/float/....	
-     * @Author: https://blog.csdn.net/chen_2890			
+     * int/long/double/float/....
+     * @Author: https://blog.csdn.net/chen_2890
      */
     @Test
     public void testTermQuery(){
@@ -270,7 +270,7 @@ class DemoApplicationTests {
     }
     /**
      * @Description:布尔查询
-     * @Author: https://blog.csdn.net/chen_2890			
+     * @Author: https://blog.csdn.net/chen_2890
      */
     @Test
     public void testBooleanQuery(){
@@ -290,7 +290,7 @@ class DemoApplicationTests {
 
     /**
      * @Description:模糊查询
-     * @Author: https://blog.csdn.net/chen_2890			
+     * @Author: https://blog.csdn.net/chen_2890
      */
     @Test
     public void testFuzzyQuery(){
