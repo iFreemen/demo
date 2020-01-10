@@ -2,51 +2,28 @@ package com.example.demo;
 
 import com.example.demo.entity.Buyer;
 import com.example.demo.entity.ES.Beer;
-import com.example.demo.entity.Staff;
-import com.example.demo.mq.MQConsumer;
 import com.example.demo.mq.MQProducer;
 import com.example.demo.service.Impl.deleteIfelse.AVIPPayServiceImpl;
 import com.example.demo.service.Impl.deleteIfelse.FactoryAndBean.CalPrice;
-import com.example.demo.service.UserPayService;
 import com.example.demo.service.es.BeerRepository;
 import com.example.demo.utils.RedisUtil;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.jms.Destination;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -173,7 +150,7 @@ class DemoApplicationTests {
      */
     @Test
     public void queryES(){
-        Iterable<Beer> all = this.beerRepository.findAll();
+        Iterable<Beer> all = beerRepository.findAll();
         for (Beer beer : all) {
             System.out.println("数据"+beer);
         }
@@ -185,10 +162,10 @@ class DemoApplicationTests {
     @Test
     public void testQueryAll(){
         // 查找所有
-        //Iterable<Beer> list = this.beerRepository.findAll();
+        //Iterable<Beer> list = beerRepository.findAll();
         // 对某字段排序查找所有 Sort.by("price").descending() 降序
         // Sort.by("price").ascending():升序
-        Iterable<Beer> list = this.beerRepository.findAll(Sort.by("price").ascending());
+        Iterable<Beer> list = beerRepository.findAll(Sort.by("price").ascending());
 
         for (Beer beer:list){
             System.out.println("数据："+beer);
@@ -201,7 +178,7 @@ class DemoApplicationTests {
      */
     @Test
     public void queryByPriceBetween(){
-        List<Beer> list = this.beerRepository.findByPriceBetween(2000.00, 3500.00);
+        List<Beer> list = beerRepository.findByPriceBetween(2000.00, 3500.00);
         for (Beer beer : list) {
             System.out.println("item = " + beer);
         }
@@ -217,7 +194,7 @@ class DemoApplicationTests {
         // 添加基本分词查询
         queryBuilder.withQuery(QueryBuilders.matchQuery("title", "小米手机"));
         // 搜索，获取结果
-        Page<Beer> items = this.beerRepository.search(queryBuilder.build());
+        Page<Beer> items = beerRepository.search(queryBuilder.build());
         // 总条数
         long total = items.getTotalElements();
         System.out.println("total = " + total);
@@ -238,7 +215,7 @@ class DemoApplicationTests {
         //matchQuery:底层就是使用的termQuery
         queryBuilder.withQuery(QueryBuilders.matchQuery("title","坚果"));
         //查询，search 默认就是分页查找
-        Page<Beer> page = this.beerRepository.search(queryBuilder.build());
+        Page<Beer> page = beerRepository.search(queryBuilder.build());
         //获取数据
         long totalElements = page.getTotalElements();
         System.out.println("获取的总条数:"+totalElements);
@@ -262,7 +239,7 @@ class DemoApplicationTests {
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
         builder.withQuery(QueryBuilders.termQuery("price",998.0));
         // 查找
-        Page<Beer> page = this.beerRepository.search(builder.build());
+        Page<Beer> page = beerRepository.search(builder.build());
 
         for(Beer item:page){
             System.out.println(item);
@@ -282,7 +259,7 @@ class DemoApplicationTests {
         );
 
         // 查找
-        Page<Beer> page = this.beerRepository.search(builder.build());
+        Page<Beer> page = beerRepository.search(builder.build());
         for(Beer item:page){
             System.out.println(item);
         }
@@ -296,7 +273,7 @@ class DemoApplicationTests {
     public void testFuzzyQuery(){
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
         builder.withQuery(QueryBuilders.fuzzyQuery("title","faceoooo"));
-        Page<Beer> page = this.beerRepository.search(builder.build());
+        Page<Beer> page = beerRepository.search(builder.build());
         for(Beer item:page){
             System.out.println(item);
         }

@@ -24,19 +24,19 @@ public class Beer implements Serializable{
     @Id
     private Long id;
 
-    @Field(type = FieldType.Text,analyzer = "ik_max_word")
+    @Field(type = FieldType.Text)
     private String title; // 标题
 
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String category; // 分类
 
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String brand; // 品牌
 
-    @Field(type = FieldType.Double)
+    @Field(type = FieldType.Float)
     private Double price; // 价格
 
-    @Field(index = false, type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String images; // 图片
 
     public Beer(Long id, String title, String category, String brand, Double price, String images) {

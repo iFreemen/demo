@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @Version V1.0
  **/
 @NoRepositoryBean
-public interface ElasticsearchRepositiry<T,ID extends Serializable> extends ElasticsearchCrudRepository<T,ID> {
+public interface ElasticsearchRepository<T,ID extends Serializable> extends ElasticsearchCrudRepository<T,ID> {
     <S extends T> S index(S entity);
 
     Iterable<T> search(QueryBuilder queryBuilder);

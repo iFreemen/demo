@@ -9,14 +9,13 @@ package com.example.demo.service.es;
  **/
 
 import com.example.demo.entity.ES.Beer;
-
 import java.util.List;
 
 /**
  * 	Beer:为实体类
  * 	Long:为Beer实体类中主键的数据类型
  */
-public interface BeerRepository extends ElasticsearchRepositiry<Beer,Long> {
+public interface BeerRepository extends ElasticsearchRepository<Beer,Long> {
 
     /**
      * 按规律自定义方法，无需实现，ES自动实现-非常方便
