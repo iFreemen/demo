@@ -82,9 +82,9 @@ spring:
 # JavaMailSender 邮件发送配置
   mail:
     host: smtp.163.com
-    username: 134*******@163.com
+    username: 134*****@163.com
     # 这个是授权码，不一定就是密码
-    password: F******123
+    password: F*****123
     properties:
       mail:
         stmp:
