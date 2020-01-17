@@ -31,6 +31,7 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 
     /**
+     * 
      * 简单邮件发送
      */
     @Override
