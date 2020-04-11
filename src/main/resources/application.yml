@@ -111,6 +111,7 @@ logging:
       example:
         demo:
           dao: debug
+  config: classpath:log4j.properties
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<< 多数据源配置 -start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ds1:

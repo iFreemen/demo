@@ -12,7 +12,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.checkerframework.checker.units.qual.A;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -29,7 +28,8 @@ import javax.jms.Destination;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 import static org.apache.activemq.kaha.impl.index.hash.HashIndex.MAXIMUM_CAPACITY;
 
@@ -291,8 +291,24 @@ class DemoApplicationTests {
 
 
     //*******************************源码学习-start************************************//
+
+    final static String getString() {
+        return "a";
+    }
+
     @Test
     public void testStringSource001() throws Exception {
+
+        String a = getString();
+        String a1 = a + "1";
+        String a2 = "a1";
+        System.out.println(a1 == a2);
+
+
+        final String b1;
+        b1 = "b";
+        logger.info("final也能赋值，只是只能一次{}", b1);
+
 
         // 1、不可变性
         String s = "Hello";
@@ -377,17 +393,17 @@ class DemoApplicationTests {
         names.add("2");
         names.add(null);
         names.add("4");
-        logger.info("join合并后：{}",String.join("-", names));
+        logger.info("join合并后：{}", String.join("-", names));
         // 打印：join合并后：1-2-null-4
 
         // 合并：Guava
         // 依次 join 多个字符串，Joiner 是 Guava 提供的 API
         Joiner joiner = Joiner.on(",").skipNulls();
-        String result = joiner.join("hello",null,"china");
-        logger.info("依次 join 多个字符串:{}",result);
+        String result = joiner.join("hello", null, "china");
+        logger.info("依次 join 多个字符串:{}", result);
 
-        List<String> list1 = Lists.newArrayList(new String[]{"hello","china",null});
-        logger.info("自动删除 list 中空值:{}",joiner.join(list1));
+        List<String> list1 = Lists.newArrayList(new String[]{"hello", "china", null});
+        logger.info("自动删除 list 中空值:{}", joiner.join(list1));
         // 输出的结果为；
         //依次 join 多个字符串:hello,china
         // 自动删除 list 中空值:hello,china
@@ -396,7 +412,7 @@ class DemoApplicationTests {
 
     // Long 源码学习
     @Test
-    public void testLongSource001(){
+    public void testLongSource001() {
         // 2-1 缓存   -128到127
         Long aLong = -128L;
         Long bLong = 127L;
@@ -412,39 +428,39 @@ class DemoApplicationTests {
     public static List listSafe = new CopyOnWriteArrayList(); // 线程安全
 
     @Test
-    public void testStaticKey(){
+    public void testStaticKey() {
         list.add("线程不安全");
         list.add(1);
-        logger.info("打印static定义的线程不安全的List：{}",JSON.toJSONString(list));
+        logger.info("打印static定义的线程不安全的List：{}", JSON.toJSONString(list));
 
         listSafe.add("线程安全");
         listSafe.add(2);
-        logger.info("打印static定义的线程安全的List：{}",JSON.toJSONString(listSafe));
+        logger.info("打印static定义的线程安全的List：{}", JSON.toJSONString(listSafe));
 
     }
 
     //  4、Arrays 排序，查找、填充、拷贝、相等判断
     // 4-1排序
     @Test
-    public void arraysSort(){
-        String[] strings = {"300", "100", "01","10"};
+    public void arraysSort() {
+        String[] strings = {"300", "100", "01", "10"};
         Arrays.sort(strings);   // 可以有第二个参数，作为外部排序器
-        logger.info("数组排序后：{}",JSON.toJSONString(strings));  // 双轴快速排序
+        logger.info("数组排序后：{}", JSON.toJSONString(strings));  // 双轴快速排序
     }
 
     // 4-2、二分查找法，必须先排序
     @Test
-    public void arrayBinarySearch(){
-        String[] strings = {"300", "100", "01","10"};
+    public void arrayBinarySearch() {
+        String[] strings = {"300", "100", "01", "10"};
         Arrays.sort(strings);
         int i = Arrays.binarySearch(strings, "100");
-        logger.info("Arrays.binarySearch结果：{}",i);   // 查询不到返回的是负数，不一定是 -1
+        logger.info("Arrays.binarySearch结果：{}", i);   // 查询不到返回的是负数，不一定是 -1
 
     }
 
     // 4-3拷贝
     @Test
-    public void arrayCopy(){
+    public void arrayCopy() {
 
         String[] s = new String[10];
         logger.info("长度：{}", s.length);
@@ -452,7 +468,7 @@ class DemoApplicationTests {
 
         String[] strings = {"a", "b", "c"};
         String[] strings1 = strings;
-        logger.info("String[]直接赋值:{}",JSON.toJSONString(strings1));  // 内存地址赋值
+        logger.info("String[]直接赋值:{}", JSON.toJSONString(strings1));  // 内存地址赋值
 
         ArrayList<String> strings2 = new ArrayList<>();
         strings2.add("d");
@@ -461,22 +477,22 @@ class DemoApplicationTests {
         ArrayList<String> strings3 = new ArrayList<>();
         strings3 = strings2;
         Object clone = strings2.clone();
-        logger.info("ArrayList-clone后的{}",JSON.toJSONString(clone));
-        logger.info("ArrayList[] 直接赋值的结果：{}",JSON.toJSONString(strings3));  //直接赋值的结果：["d","e","f"]
+        logger.info("ArrayList-clone后的{}", JSON.toJSONString(clone));
+        logger.info("ArrayList[] 直接赋值的结果：{}", JSON.toJSONString(strings3));  //直接赋值的结果：["d","e","f"]
         strings2.remove(0);
-        logger.info("ArrayList[] 修改原数组后的结果：{}",JSON.toJSONString(strings3));  // 修改原数组后的结果：["e","f"]
+        logger.info("ArrayList[] 修改原数组后的结果：{}", JSON.toJSONString(strings3));  // 修改原数组后的结果：["e","f"]
         // 说明直接赋值的，其实都是内存地址，除了8种基本数据类型
-        logger.info("ArrayList-clone后再修改的{}",JSON.toJSONString(clone));   //  ArrayList 使用lone复制,可以转换；类型
+        logger.info("ArrayList-clone后再修改的{}", JSON.toJSONString(clone));   //  ArrayList 使用lone复制,可以转换；类型
 
         // 复制一个新的数组的方法：整个拷贝--copyOf ，部分拷贝--copyOfRange
-        Arrays.copyOf(strings,2);   // 注意：copyOf 只能复制 [] 类型的数组
+        Arrays.copyOf(strings, 2);   // 注意：copyOf 只能复制 [] 类型的数组
         Arrays.copyOfRange(strings, 0, 2);  // 注意：copyOfRange 只能复制 [] 类型的数组
     }
 
     // Collections
     // 3.1 求集合中最大、小值
     @Test
-    public void getCollectionsMax(){
+    public void getCollectionsMax() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("500");
         arrayList.add("10");
@@ -489,7 +505,7 @@ class DemoApplicationTests {
 
     // 3-2-1 线程安全的集合
     @Test
-    public void safeCollection(){
+    public void safeCollection() {
         List<String> list = Collections.synchronizedList(new ArrayList<String>());
         Set<String> set = Collections.synchronizedSet(new HashSet<String>());
         Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
@@ -497,7 +513,7 @@ class DemoApplicationTests {
 
     // 3-2-2 不可变集合
     @Test
-    public void unmodifiableCollections(){
+    public void unmodifiableCollections() {
 
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("AAA");
@@ -507,26 +523,26 @@ class DemoApplicationTests {
         Set<String> set = Collections.unmodifiableSet(new HashSet<String>());
         Map<String, String> map = Collections.unmodifiableMap(new HashMap<String, String>());
 
-        logger.info("不可变集合：{}",JSON.toJSONString(arrayList.get(0)));
+        logger.info("不可变集合：{}", JSON.toJSONString(arrayList.get(0)));
     }
 
     // 4 Object
     // 4-1 相等判断  equal()   deepEquals():判断数组
     @Test
-    public void testEqual(){
+    public void testEqual() {
         Object o1 = "123";
         Object o2 = "123";
         boolean b = o1.equals(o2);   // 底层：this == obj 判断内存地址
-        logger.info("o1.equals(o2):{}",b); // true
+        logger.info("o1.equals(o2):{}", b); // true
         boolean equals = Objects.equals(o1, o2);  // (a == b) || (a != null && a.equals(b))
-        logger.info("Objects.equals(o1, o2):{}",equals); // true
+        logger.info("Objects.equals(o1, o2):{}", equals); // true
 
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("ABC");
         ArrayList<String> arrayList1 = new ArrayList<>();
         arrayList1.add("ABC");
         boolean b1 = Objects.deepEquals(arrayList, arrayList1);
-        logger.info("Objects.deepEquals(arrayList, arrayList1):{}",b1); // true
+        logger.info("Objects.deepEquals(arrayList, arrayList1):{}", b1); // true
 
         boolean aNull = Objects.isNull(01);  //  obj == null
         boolean b2 = Objects.nonNull(o1);  // obj != null
@@ -536,7 +552,7 @@ class DemoApplicationTests {
 
     // 05 ArrayList
     @Test
-    public void testArrayList(){
+    public void testArrayList() {
 
         // BUG
 //        List<String> list = Arrays.asList("hello");
@@ -545,17 +561,17 @@ class DemoApplicationTests {
 //        objects[0] = new Object();
 
 
-      // add 扩容
+        // add 扩容
         ArrayList<String> list = new ArrayList<>();
         list.add("abc");   // 空数组首次添加数据，扩容为10
         list.add("123");
         list.add("abc");
         list.add(null);
-        logger.info("ArrayList#add:{}",JSON.toJSONString(list));
+        logger.info("ArrayList#add:{}", JSON.toJSONString(list));
 
         // ArrayList 删除：索引删除、值删除、批量
         boolean abc = list.remove("abc");  // 删除的是一个
-        logger.info("ArrayList#addremove:{}",JSON.toJSONString(list));
+        logger.info("ArrayList#addremove:{}", JSON.toJSONString(list));
 
 
         ArrayList<Integer> integers = new ArrayList<>();
@@ -566,15 +582,15 @@ class DemoApplicationTests {
         Integer integer = integers.get(1);
 
         integers.remove(1);
-        logger.info("ArrayList#remove:{}",JSON.toJSONString(integers));  // [2,1]  remove 此时用根据索引删除的。
+        logger.info("ArrayList#remove:{}", JSON.toJSONString(integers));  // [2,1]  remove 此时用根据索引删除的。
 
         // 迭代器：hasNext()  next() remove()
         Iterator<Integer> iterator = integers.iterator();
-        while (iterator.hasNext()){
-            logger.info("ArrayList#itertor#next,当前的值:{}",iterator.next());
+        while (iterator.hasNext()) {
+            logger.info("ArrayList#itertor#next,当前的值:{}", iterator.next());
 
             iterator.remove();  // 无返回值
-            logger.info("ArrayList#itertor#remove,调用remove后打印当前的值:{}",iterator.next());
+            logger.info("ArrayList#itertor#remove,调用remove后打印当前的值:{}", iterator.next());
         }
 
 
@@ -586,7 +602,7 @@ class DemoApplicationTests {
 
     // LinkedList
     @Test
-    public void testLinkedList(){
+    public void testLinkedList() {
         LinkedList<String> linkedList = new LinkedList<>();
 
         // 默认链尾添加
@@ -606,18 +622,18 @@ class DemoApplicationTests {
         // 节点查询
         // 是否存在
         boolean b = linkedList.contains("b");
-        logger.info("LinkedList#contains，查询是否存在:{}",b);
+        logger.info("LinkedList#contains，查询是否存在:{}", b);
 
         // 查询元素索引
-        logger.info("链表内容：{}",JSON.toJSONString(linkedList)); // ["b","c",null]
+        logger.info("链表内容：{}", JSON.toJSONString(linkedList)); // ["b","c",null]
         int i = linkedList.indexOf(null);
         linkedList.offer("ss");     //  offer()  就是 add()
         logger.info("查询的索引位置：{}", i);  // 2
-        logger.info("offer后链表内容：{}",JSON.toJSONString(linkedList));  //offer后链表内容：["b","c",null,"ss"]
+        logger.info("offer后链表内容：{}", JSON.toJSONString(linkedList));  //offer后链表内容：["b","c",null,"ss"]
 
         // 链表截取
         ListIterator<String> stringListIterator = linkedList.listIterator(1);
-        logger.info("listIterator后链表内容：{}",JSON.toJSONString(stringListIterator));  //offer后链表内容：["b","c",null,"ss"]
+        logger.info("listIterator后链表内容：{}", JSON.toJSONString(stringListIterator));  //offer后链表内容：["b","c",null,"ss"]
         String s = linkedList.get(3);  // 链表也能通过索引，快速获取值
 
         String s1 = linkedList.get(1);
@@ -628,19 +644,19 @@ class DemoApplicationTests {
     // HashMap 16 0,75
     // 7-1 什么是HashMap
     @Test
-    public void testHashMap(){
-            int cap = 17;
-            int n = cap - 1;
-            n |= n >>> 1;
-            n |= n >>> 2;
-            n |= n >>> 4;
-            n |= n >>> 8;
-            n |= n >>> 16;
-            int h = (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    public void testHashMap() {
+        int cap = 17;
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        int h = (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
         logger.info("扩容多少合适:{}", h);   // 大于等于原数值，并且这个数是2的N次方，至少16
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("abc","ABC");
+        map.put("abc", "ABC");
         map.put("cde", "CDE");
         logger.info("HashMap#put:{}", JSON.toJSONString(map));  // {"abc":"ABC","cde":"CDE"}
 
@@ -655,7 +671,7 @@ class DemoApplicationTests {
 
     // TreeMap
     @Test
-    public void testTreeMap(){
+    public void testTreeMap() {
         HashMap<Integer, String> hmap = new HashMap<>();
 
         hmap.put(13, "Yellow");
@@ -674,28 +690,28 @@ class DemoApplicationTests {
         }
 
         int size = 0;
-        if(++size > 5){
+        if (++size > 5) {
 
         }
-        System.out.println("size:"+size);
+        System.out.println("size:" + size);
 
 
         HashMap<Integer, String> hmap1 = new HashMap<>();
         String put1 = hmap1.put(0, "00");
-        System.out.println("第一次打印:"+put1);
+        System.out.println("第一次打印:" + put1);
         String put2 = hmap1.put(0, "11");
-        System.out.println("第二次打印:"+put2);  // 返回旧值
+        System.out.println("第二次打印:" + put2);  // 返回旧值
     }
 
     // ArrayList
     @Test
-    public void testBatchInsert(){
+    public void testBatchInsert() {
         // 准备拷贝数据
         ArrayList<Integer> list = new ArrayList<>();
         ArrayList<Integer> integers = new ArrayList<>();
-        for(int i=0;i<3000;i++){
+        for (int i = 0; i < 3000; i++) {
             list.add(i);
-            if(i < 10000){
+            if (i < 10000) {
                 integers.add(i);
             }
         }
@@ -703,42 +719,42 @@ class DemoApplicationTests {
         // for 循环 + add
         ArrayList<Integer> list2 = new ArrayList<>();
         long start1 = System.currentTimeMillis();
-        for(int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             list2.add(list.get(i));
         }
-        logger.info("单个 for 循环新增 300 w 个，耗时{}",System.currentTimeMillis()-start1);
+        logger.info("单个 for 循环新增 300 w 个，耗时{}", System.currentTimeMillis() - start1);
 
         // 批量新增
         ArrayList<Integer> list3 = new ArrayList<>();
         long start2 = System.currentTimeMillis();
         list3.addAll(list);
-        logger.info("批量新增 300 w 个，耗时{}",System.currentTimeMillis()-start2);
+        logger.info("批量新增 300 w 个，耗时{}", System.currentTimeMillis() - start2);
 
         ArrayList<Integer> list4 = new ArrayList<>(list);
 
         // 批量删除，效率低
         long start3 = System.currentTimeMillis();
         boolean b = list3.removeAll(integers);
-        logger.info("删除是否成功：{}",b);
-        logger.info("list3被删除后的长度：{}",list3.size());
-        logger.info("批量删除 300 w 个，耗时{}",System.currentTimeMillis()-start3);
+        logger.info("删除是否成功：{}", b);
+        logger.info("list3被删除后的长度：{}", list3.size());
+        logger.info("批量删除 300 w 个，耗时{}", System.currentTimeMillis() - start3);
 
         // 迭代器删除，效率好
         long start4 = System.currentTimeMillis();
         List<Integer> integers1 = removeAll0(list4, integers);
-        logger.info("批量删除 300 w 个，耗时{}",System.currentTimeMillis()-start4);
+        logger.info("批量删除 300 w 个，耗时{}", System.currentTimeMillis() - start4);
 
 
         // clear 方法
-        logger.info("执行clear前数组长度：{}",list4.size());
+        logger.info("执行clear前数组长度：{}", list4.size());
         list4.clear();
-        logger.info("执行clear后数组长度：{}",list4.size());
+        logger.info("执行clear后数组长度：{}", list4.size());
     }
 
 
     // Guava 运用工厂模式创建集合
     @Test
-    public void guavaCreateArrayList() throws Exception{
+    public void guavaCreateArrayList() throws Exception {
         ArrayList<String> list = Lists.newArrayList();  // Lists 是 Guava的类
 
         // 这种方式命名是错误的
@@ -753,12 +769,12 @@ class DemoApplicationTests {
         list.add("abc");
         ArrayList<String> list3 = Lists.newArrayList(list);  // list 不能为null，不然报  nullpointException  相当于   list.addAll()
         list.add("def");
-        logger.info("Guava初始化打印：{}",JSON.toJSONString(list3));
+        logger.info("Guava初始化打印：{}", JSON.toJSONString(list3));
 
         // 反转数组
         List<String> reverse = Lists.reverse(list);
-        logger.info("list反转前：{}",JSON.toJSONString(list));
-        logger.info("list反转后：{}",JSON.toJSONString(reverse));
+        logger.info("list反转前：{}", JSON.toJSONString(list));
+        logger.info("list反转后：{}", JSON.toJSONString(reverse));
 
         // 反转字符串
         String s = "32y4hh09485%&^*)(*噢诶入味";
@@ -766,7 +782,7 @@ class DemoApplicationTests {
         logger.info("反转后：{}", s1);
         String s2 = reverseRecursive(s);
         logger.info("反转后：{}", s2);
-        String s3 = charAtReverse (s);
+        String s3 = charAtReverse(s);
         logger.info("反转后：{}", s3);
 
         // Guava 使用Lists对List分组
@@ -778,8 +794,8 @@ class DemoApplicationTests {
         HashSet<Integer> targetHash = new HashSet<>(target); //小集合用hashset
         Iterator<Integer> iter = result.iterator(); //采用Iterator迭代器进行数据的操作
 
-        while(iter.hasNext()){
-            if(targetHash.contains(iter.next())){
+        while (iter.hasNext()) {
+            if (targetHash.contains(iter.next())) {
                 iter.remove();
             }
         }
@@ -788,8 +804,8 @@ class DemoApplicationTests {
 
 
     // 字符串反转 利用 StringBuffer
-    public static String reverseStringBuffer(String s){
-        if(s == null){
+    public static String reverseStringBuffer(String s) {
+        if (s == null) {
             throw new NullPointerException();
         }
         StringBuffer sb = new StringBuffer(s);
@@ -797,23 +813,23 @@ class DemoApplicationTests {
     }
 
     // 字符串反转 利用二分法折半的思想
-    public static String reverseRecursive(String s){
+    public static String reverseRecursive(String s) {
         int length = s.length();
-        if(length<=1){
+        if (length <= 1) {
             return s;
         }
-        String left  = s.substring(0,length/2);
-        String right = s.substring(length/2 ,length);
-        String afterReverse = reverseRecursive(right)+reverseRecursive(left);//此处是递归的方法调用
+        String left = s.substring(0, length / 2);
+        String right = s.substring(length / 2, length);
+        String afterReverse = reverseRecursive(right) + reverseRecursive(left);//此处是递归的方法调用
         return afterReverse;
     }
 
     // 循环拼接
-    public static String charAtReverse (String s){
+    public static String charAtReverse(String s) {
         int length = s.length();
         String reverse = " ";
         for (int i = 0; i < length; i++) {
-            reverse = s.charAt(i)+reverse;//字符串中获取单个字符的字符的放法
+            reverse = s.charAt(i) + reverse;//字符串中获取单个字符的字符的放法
         }
         return reverse;
     }
@@ -822,15 +838,18 @@ class DemoApplicationTests {
     // 并发集合类
     // CopyOnWriteArrayList
     @Test
-    public void testCopyOnWriteArrayList(){
+    public void testCopyOnWriteArrayList() {
         CopyOnWriteArrayList<String> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
         copyOnWriteArrayList.add("abc1");  // 在尾部添加元素
         copyOnWriteArrayList.add("abc2");  // 在尾部添加元素
         copyOnWriteArrayList.add("abc3");  // 在尾部添加元素
 
         // 指定位置添加
-        copyOnWriteArrayList.add(3,"def");
-        logger.info("CopyOnWriteArrayList指定位置的添加：{}",JSON.toJSONString(copyOnWriteArrayList));
+        copyOnWriteArrayList.add(3, "def");
+        logger.info("CopyOnWriteArrayList指定位置的添加：{}", JSON.toJSONString(copyOnWriteArrayList));
+
+        // 指定位置修改
+        copyOnWriteArrayList.set(0,"修改");
 
         // 批量添加
 //      copyOnWriteArrayList.addAll();
@@ -842,7 +861,7 @@ class DemoApplicationTests {
         ArrayList<String> list = new ArrayList<>();
         list.add("abc1");
         boolean b = copyOnWriteArrayList.removeAll(list);  // 如果原数组长度为0，返回只有false
-        logger.info("CopyOnWriteArrayList#removeAll:{}",JSON.toJSONString(copyOnWriteArrayList));
+        logger.info("CopyOnWriteArrayList#removeAll:{}", JSON.toJSONString(copyOnWriteArrayList));
 
         int i = copyOnWriteArrayList.indexOf(null);  // 查询在哪个索引，不存在返回 -1
 
@@ -851,11 +870,262 @@ class DemoApplicationTests {
         copyOnWriteArrayList.add("new1");
         String next1 = iterator.next();
         copyOnWriteArrayList.add("new3");
+    }
 
 
+    // ConcurrentHashMap
+    @Test
+    public void testConcurrentHashMap(){
+        ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+        concurrentHashMap.put("abc", "ABC");  // synchronized
+        concurrentHashMap.put("abc", "ABC1");  // synchronized
+        logger.info("ConcurrentHashMap：{}", JSON.toJSONString(concurrentHashMap));
+    }
+
+    /**
+     * 队列
+     */
+    // 1、链表阻塞队列   LinkedBlockingQueue
+    @Test
+    public void testLinkedBlockingQueue(){
+        LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>(2);
+
+        // 新增有多种方法
+        // 1-1 add   ： 满了就抛异常
+        // 1-2 offer ：超时就返回false
+        // 1-3 put : 队列满了就一直阻塞
+        try {
+            queue.put("a");
+            queue.put("b");   // 亲测，队列满后会一直堵塞
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("链表阻塞队列#put():{}",JSON.toJSONString(queue));
+
+        // 阻塞删除,一次只能获取头部元素，如果是空队列时。take就会阻塞直到有值
+        // 2-1 take:查看并删除
+        try {
+            String qtake0 = queue.take();
+            logger.info("链表阻塞队列#take：{}",qtake0);
+
+            String qtake1 = queue.take();
+            logger.info("链表阻塞队列#take：{}",qtake1);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 2-2 peek查看不删除,当空是返回 null，不会阻塞
+        String peek = queue.peek();
+        logger.info("链表队列#peek：{}",peek);
+    }
+
+    //
+
+    // LinkedList是Queue的实现类
+    @Test
+    public void testLinkedListImplQueue(){
+        Queue<String> queue = new LinkedList<>();
+        queue.add("a");
+        logger.info("LinkedList实现Queue：{}",JSON.toJSONString(queue));
+    }
+
+    // 同步队列
+    @Test
+    public void testSynchronousQueue(){
+        SynchronousQueue<String> sQueue = new SynchronousQueue<>();
+        try {
+            sQueue.put("A");
+
+            String take = sQueue.take();
+
+            int size = sQueue.size();  // 注意：同步队列的size是个坑爹的size，永远还有0
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 数组阻塞队列
+     * ArrayBlockingQueue
+     * 必须指定大小
+     */
+    @Test
+    public void testArrayBlockingQueue(){
+        ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
+        try {
+            queue.put("abc");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 延时队列
+     */
+    @Test
+    public void testDelayQueue(){
+// 把 String 放到 DelayQueue 中是不行的，编译都无法通过，
+// DelayQueue 类在定义的时候，是有泛型定义的，
+// 泛型类型必须是 Delayed 接口的子类才行。
+//        DelayQueue<String> strings = new DelayQueue<String>();
 
     }
 
 
+    /**
+     * 锁
+     */
+    @Test
+    public void testAQS(){
+
+    }
+
     //*******************************源码学习-end************************************//
+
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>多线程学习-start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    /**
+     * join
+     */
+    @Test
+    public void join() throws Exception {
+        Thread main = Thread.currentThread();
+        logger.info("{} is run。",main.getName());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                logger.info("{} begin run",Thread.currentThread().getName());
+                try {
+                    Thread.sleep(30000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                logger.info("{} end run",Thread.currentThread().getName());
+            }
+        });
+        // 开一个子线程去执行
+        thread.start();
+        // 当前主线程等待子线程执行完成之后再执行
+        thread.join();
+        logger.info("{} is end", Thread.currentThread());
+    }
+
+    // 实现多线程的四种方法
+    // 第一种: 实现Thread类，重写run()
+    // 第二种: 继承 Runable接口，实现run()
+    // 第三种: 使用Future Task 实现有返回结果的线程
+    // 第四种: 线程池
+
+    /**
+     * 第一种: 实现Thread类，重写run()
+     */
+    @Test
+    public void testMyThread() {
+        Thread myThreadA = new MyThread("A");
+        Thread myThreadB = new MyThread("B");
+        myThreadA.start();
+        myThreadB.start();
+    }
+
+    /**
+     * 第二种: 继承 Runnable接口，实现run()
+     */
+    @Test
+    public void testRunnable() {
+        Runnable a = new MyRunnable("A");
+        Runnable b = new MyRunnable("B");
+
+        new Thread(a).start();
+        new Thread(b).start();
+
+        new Thread(a).run();   // 不用start,用run的话，就是主线程 mian 直接执行MyRunnable的run()。
+    }
+
+    /**
+     * 第三种：FutureTask
+     */
+    @Test
+    public void testMyFutureTask() {
+        // 创建任务集合
+        List<FutureTask<Integer>> taskList = new ArrayList<>();
+        // 创建线程池
+        ExecutorService exec = Executors.newFixedThreadPool(5);
+        for (int i = 0; i < 10; i++) {
+            // 传入Callable 对象创建FutureTask对象,当然除了入参是Callable还可以是Runnable,底层使用适配器转为Callable
+            FutureTask<Integer> ft = new FutureTask<>(new ComputeTask(i, "" + i));
+            taskList.add(ft);
+            // 提交给线程池执行任务，也可以通过exec.invokeAll(taskList)一次性提交所有任务;
+            exec.submit(ft);
+        }
+
+        System.out.println("所有计算任务提交完毕, 主线程接着干其他事情！");
+
+        // 开始统计各计算线程计算结果
+        Integer totalResult = 0;
+        for (FutureTask<Integer> ft : taskList) {
+            try {
+                //FutureTask的get方法会自动阻塞,直到获取计算结果为止
+                totalResult = totalResult + ft.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 关闭线程池
+        exec.shutdown();
+        System.out.println("多任务计算后的总结果是:" + totalResult);
+    }
+
+    /**
+     * 第四种：线程池
+     */
+    @Test
+    public void testThreadPool(){
+        // 这种不指定队列大小的线程，很容易导致超时
+        ExecutorService executorService = Executors.newFixedThreadPool(10);  // 大小固定的线程池
+        // submit是提交任务的意思
+        // Thread.currentThread() 得到当前线程
+        executorService.submit(() -> System.out.println(Thread.currentThread().getName() + " is run"));
+    }
+
+    /**
+     * 只有一个线程的线程池
+     */
+    @Test
+    public void testSingleThreadPoll(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();  // 只有一个线程的线程池
+    }
+
+    /**
+     * CachedThreadPool
+     */
+    @Test
+    public void testCachedThreadPool(){
+        ExecutorService executorService = Executors.newCachedThreadPool();
+    }
+
+    /**
+     * ScheduledThreadPool
+     * 定时任务线程池
+     */
+    @Test
+    public void testDelay(){
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+
+    }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>多线程学习-end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>设计模式-start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>设计模式-end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+    // 锁
+    public class MyAQS extends AbstractQueuedSynchronizer{
+
+    }
 }

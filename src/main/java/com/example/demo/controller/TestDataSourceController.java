@@ -20,7 +20,7 @@ import java.util.List;
  **/
 @Controller
 public class TestDataSourceController {
-    private static final Logger logger = LoggerFactory.getLogger(TestDataSourceController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(TestDataSourceController.class);
 
     @Autowired
     private TestDataSourceService testDataSourceService;

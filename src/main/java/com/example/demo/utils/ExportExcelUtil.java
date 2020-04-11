@@ -106,7 +106,7 @@ public class ExportExcelUtil<T>{
 		// 生成一个字体
 		XSSFFont font = workbook.createFont();
 		font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
-		font.setFontName("宋体"); 
+		font.setFontName("宋体");
 		font.setColor(new XSSFColor(java.awt.Color.BLACK));
 		font.setFontHeightInPoints((short) 11);
 		// 把字体应用到当前的样式
@@ -126,7 +126,7 @@ public class ExportExcelUtil<T>{
 		font2.setBoldweight(XSSFFont.BOLDWEIGHT_NORMAL);
 		// 把字体应用到当前的样式
 		style2.setFont(font2);
- 
+
 		// 产生表格标题行
 		XSSFRow row = sheet.createRow(0);
 		XSSFCell cellHeader;
@@ -135,7 +135,7 @@ public class ExportExcelUtil<T>{
 			cellHeader.setCellStyle(style);
 			cellHeader.setCellValue(new XSSFRichTextString(headers[i]));
 		}
- 
+
 		// 遍历集合数据，产生数据行
 		Iterator<T> it = dataset.iterator();
 		int index = 0;
@@ -200,7 +200,7 @@ public class ExportExcelUtil<T>{
 						}
 						cell.setCellValue(textValue);
 					}
-					
+
 				} catch (SecurityException e) {
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
@@ -213,7 +213,7 @@ public class ExportExcelUtil<T>{
 					e.printStackTrace();
 				} finally {
 					// 清理资源
-					
+
 				}
 			}
 		}
@@ -223,11 +223,11 @@ public class ExportExcelUtil<T>{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally{
-			try {  	
-		        out.close();  
-		    } catch (IOException e) {  
+			try {
+		        out.close();
+		    } catch (IOException e) {
 		        e.printStackTrace();
-		    } 
+		    }
 		}
 	}
 	
