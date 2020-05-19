@@ -1,0 +1,56 @@
+Annotation 注解
+Annotation 是接口
+java.lang.Annotation 接口  不需要打包注解用
+
+注解能代替XML等配置文件
+
+@Override  重写
+
+@Deprecated  表示方法已过时
+
+@Test  测试方法
+
+@SuppressWarnings()   不警告，里面有针对不同IDE提供  "all":删除全部警告、
+
+
+自定义注解
+三步骤：
+1、编写注解,留意有@
+
+@Retention(RetentionPolicy.RUNTIME)   // 用于指明 MyAnnotation 的作用域
+public @interface MyAnnotation {
+    // 定义变量
+    public String name() default "我是默认名字，也可以不加";
+
+    public int age();
+
+    // 定义接收数组
+    public String[]  like();
+
+    // 定义枚举类型变量，限定取值范围
+    public CatColor color();
+
+}
+
+
+2、在类上应用
+@MyAnnotation(name="catname",age=12,like = {"小黄鱼","泥鳅"},color = CatColor.RED )
+@Data
+public class Cat {
+
+    private String name;
+
+    private int age;
+
+    private String[] like;
+
+    private CatColor color;
+}
+
+
+
+3、对应用了注解的类进行反射操作的类
+
+
+
+
